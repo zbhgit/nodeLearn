@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-// const SubSchema = new Schema({
-//   userId: { type: ObjectId, required: true, index: 1 },
-//   url: { String, required: true },
-// });
 
 const SubSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, required: true, index: 1 },
