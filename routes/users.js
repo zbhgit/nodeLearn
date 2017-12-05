@@ -3,20 +3,22 @@ const express = require('express');
 const router = express.Router();
 
 const UserService = require('../services/user_service');
+const HTTPRequestParamError = require('../errors/http_request_param_error');
 
 /* GET users listing. */
 
 router.route('/')
-  .get((req, res) => {
+  .get((req, res, next) => {
     (async () => {
+      throw new HTTPRequestParamError('page', '请指定页码', 'page can not be empty');
       const users = await UserService.getAllUsers();
-      res.json(users);
+      return users;
     })()
       .then((r) => {
-        console.log(r);
+        res.json(r);
       })
       .catch((e) => {
-        console.log(e);
+        next(e);
       });
   })
   .post((req, res) => {

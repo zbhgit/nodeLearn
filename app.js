@@ -4,10 +4,16 @@ const path = require("path")
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+// 错误处理中间件
+const httpErrorhandler = require('./middlewares/http_error_handler');
+//日志处理
+const utilsLogger = require('./utils/loggers/logger');
+
 
 const index = require('./routes/index');
 const users = require('./routes/users');
 const subs = require('./routes/subs')
+
 
 const app = express();
 require('./services/mongodb_service');
@@ -28,6 +34,8 @@ app.use('/', index);
 app.use('/user', users);
 app.use('/subscription', subs)
 
+app.use(httpErrorhandler());
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   const err = new Error('Not Found');
@@ -45,5 +53,14 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+process.on('uncaugthException', (err) => {
+  utilsLogger.error(err.message);
+});
+
+
+process.on('unhandledReject', (reason, p) => {
+  utilsLogger.error(err.message);
+})
 
 module.exports = app;

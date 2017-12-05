@@ -10,11 +10,3 @@ class HttpBaseError extends Error {
 
 module.exports = HttpBaseError;
 
-try {
-  throw new HttpBaseError(404, '资源不存在', 10000, 'resource not found')
-} catch (err) {
-  console.log(err.message);
-  console.log(err.httpStatusCode);
-  console.log(err.errorCode);
-  console.log(err.httpMsg);
-}
